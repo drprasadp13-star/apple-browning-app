@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apple Browning Grader</title>
+<meta name="description" content="Grades browning of fresh-cut apple pieces from a phone photo. Research prototype; works offline.">
+<meta name="theme-color" content="#1E2421">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <h1>Apple Browning Grader</h1>
+  <span id="net" class="net" aria-live="polite"></span>
+</header>
+
+<main>
+  <section class="scale" aria-label="Browning scale">
+    <div class="ramp" id="ramp">
+      <div class="sw l0"><span>0</span></div><div class="sw l1"><span>1</span></div><div class="sw l2"><span>2</span></div><div class="sw l3"><span>3</span></div>
+      <div class="marker" id="marker" hidden></div>
+    </div>
+    <div class="ticks"><span>ΔE 0</span><span>1.5</span><span>3</span><span>6</span><span>12+</span></div>
+    <p class="readout" id="readout">Take a photo of the dish to place it on the scale.</p>
+  </section>
+
+  <section class="controls">
+    <div class="field">
+      <label for="pieces">Pieces in photo</label>
+      <div class="stepper">
+        <button type="button" id="minus" aria-label="Fewer pieces">−</button>
+        <output id="pieces" aria-live="polite">4</output>
+        <button type="button" id="plus" aria-label="More pieces">+</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lab" id="modeLab">Mode</span>
+      <div class="seg" role="radiogroup" aria-labelledby="modeLab">
+        <button type="button" role="radio" aria-checked="true" data-mode="single">Single photo</button>
+        <button type="button" role="radio" aria-checked="false" data-mode="ref">Compare with fresh-cut photo</button>
+      </div>
+    </div>
+    <div class="shots">
+      <div class="shot" id="refShot" hidden>
+        <p class="hint">Fresh-cut photo (same dish, same phone, taken right after cutting)</p>
+        <label class="btn ghost"><input type="file" accept="image/*" id="fileRef">Choose fresh-cut photo</label>
+        <span class="fname" id="refName"></span>
+      </div>
+      <div class="shot">
+        <label class="btn primary"><input type="file" accept="image/*" capture="environment" id="fileCam">Take photo</label>
+        <label class="btn ghost"><input type="file" accept="image/*" id="fileLib">Choose from gallery</label>
+      </div>
+    </div>
+  </section>
+
+  <section class="result" id="result" hidden>
+    <canvas id="view" aria-label="Photo with detected pieces"></canvas>
+    <dl class="nums" id="nums"></dl>
+    <ul class="pieces" id="pieceList"></ul>
+    <ul class="notes" id="notes"></ul>
+  </section>
+
+  <details class="howto">
+    <summary>How to take the photo</summary>
+    <ol>
+      <li>Put the pieces in a clear glass dish on a sheet of plain white paper. Leave white paper visible around the dish.</li>
+      <li>Shoot straight down, with the dish filling about a third of the frame. Use even light from above; avoid side light from a window or desk lamp, flash and strong reflections.</li>
+      <li>Set the number of pieces in the photo before you shoot.</li>
+      <li>For the most direct measure, use the comparison mode with a photo of the same dish taken just after cutting, on the same phone.</li>
+    </ol>
+  </details>
+
+  <details class="about">
+    <summary>What the numbers mean</summary>
+    <p>The app finds the cut pieces, balances colour against the nearby white paper, and converts the pieces to CIELAB. In single-photo mode a ridge model, trained on photos of one apple taken with three Android phones over 0 to 120 min, estimates the colour difference (ΔE*ab) from the freshly cut state. In comparison mode the app measures ΔE*ab directly between your two photos.</p>
+    <p>Levels follow fixed colour-difference bands: 0 below 1.5, 1 from 1.5 to 3, 2 from 3 to 6, 3 at 6 or more. They are image-derived levels, not colorimeter readings.</p>
+    <p>On a held-out phone the single-photo estimate was off by about <span id="mae"></span> ΔE units on average. The model was trained on a single apple in one session, so treat results as a research prototype.</p>
+    <p class="ver">Version <span id="ver"></span></p>
+  </details>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

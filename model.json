@@ -1,0 +1,63 @@
+{
+ "version": "1.0.0",
+ "description": "Ridge regression of image-derived dE*ab vs t0 (consensus of 3 phones) from single-photo colour features after local white-paper normalisation; level from approved bands. Trained on one apple, one session; research prototype.",
+ "features": [
+  "L",
+  "a",
+  "b"
+ ],
+ "feature_set": "F1_basic",
+ "alpha": 10,
+ "mu": [
+  80.77703513699844,
+  -0.9221348077482444,
+  17.115420725254193
+ ],
+ "sd": [
+  4.223211665788489,
+  1.0988728319933123,
+  4.23757885190821
+ ],
+ "w": [
+  -1.5800121602981236,
+  1.2863417609425134,
+  0.7857684392395599
+ ],
+ "b": 4.890851629583716,
+ "bands": [
+  1.5,
+  3.0,
+  6.0
+ ],
+ "level_names": [
+  "0: below 1.5",
+  "1: 1.5 to 3",
+  "2: 3 to 6",
+  "3: 6 or more"
+ ],
+ "white_target_linear": 0.8,
+ "trained_on": {
+  "n_images": 79,
+  "phones": [
+   "oppo",
+   "poco",
+   "realme"
+  ],
+  "treatments": [
+   "apple_control",
+   "apple_lemon_treated",
+   "apple_saltwater_treated"
+  ],
+  "time_min": [
+   0,
+   120
+  ]
+ },
+ "nested_lodo": {
+  "MAE": 1.980021731952733,
+  "R2": 0.482283840349504,
+  "macro_f1": 0.33274905642637437,
+  "qwk": 0.35431853324497464,
+  "within_one_level": 0.8734177215189873
+ }
+}
